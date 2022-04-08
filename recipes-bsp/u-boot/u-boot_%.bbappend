@@ -13,6 +13,7 @@ DEFAULT_PREFERENCE_sun50i="1"
 
 SRC_URI += " \
            file://0001-nanopi_neo_air_defconfig-Enable-eMMC-support.patch \
+           file://0002-Added-nanopi-r1-board-support.patch \
            file://boot.cmd \
            "
 # fix booting issue on orange pi zero

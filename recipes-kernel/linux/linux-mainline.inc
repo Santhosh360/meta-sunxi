@@ -31,3 +31,8 @@ SRC_URI_append_use-mailine-graphics = " file://drm.cfg"
 SRC_URI_append_bananapi = " file://axp20x.cfg"
 
 FILES_${KERNEL_PACKAGE_NAME}-base_append = " ${nonarch_base_libdir}/modules/${KERNEL_VERSION}/modules.builtin.modinfo"
+
+PACKAGES += "kernel-autoconf"
+PROVIDES += "kernel-autoconf"
+
+FILES_kernel-autoconf = "${includedir}/autoconf.h"

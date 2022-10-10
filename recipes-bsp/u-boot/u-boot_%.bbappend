@@ -21,6 +21,7 @@ SRC_URI += " \
            file://0007-h3-enable-power-led.patch \
            file://0008-h3-set-safe-axi_apb-clock-dividers.patch \
            file://boot.cmd \
+           file://nanopi-r1-env.txt \
            "
 # fix booting issue on orange pi zero
 SRC_URI_append_orange-pi-zero = " file://0002-Revert-sunxi-psci-avoid-error-address-of-packed-memb.patch"
@@ -37,4 +38,27 @@ do_compile_sun50i[depends] += "atf-sunxi:do_deploy"
 
 do_compile_append() {
     ${B}/tools/mkimage -C none -A arm -T script -d ${WORKDIR}/boot.cmd ${WORKDIR}/${UBOOT_ENV_BINARY}
+    
+    # Add the soc specific parameters in the environment
+    sed -e "s,overlay_prefix=,overlay_prefix=${OVERLAY_PREFIX},g" \
+        -i ${WORKDIR}/nanopi-r1-env.txt
+    sed -e "s,overlays=,overlays=${DEFAULT_OVERLAYS} ,g" \
+        -i ${WORKDIR}/nanopi-r1-env.txt
+    # Select boot partition
+    if [ ! -z "${SUNXI_BOOT_IMAGE}" ]; then
+        sed -e "s,rootdev=,rootdev=/dev/${SUNXI_STORAGE_DEVICE}p2 ,g" \
+            -i ${WORKDIR}/nanopi-r1-env.txt
+    else
+        sed -e "s,rootdev=,rootdev=/dev/${SUNXI_STORAGE_DEVICE}p1 ,g" \
+            -i ${WORKDIR}/nanopi-r1-env.txt
+    fi
+}
+
+do_install_append() {
+    # Install files to rootfs/boot/
+    install -D -m 644 ${WORKDIR}/nanopi-r1-env.txt ${D}/boot/nanopi-r1-env.txt
+}
+
+do_deploy_append() {
+    install -D -m 644 ${WORKDIR}/nanopi-r1-env.txt ${DEPLOYDIR}/
 }

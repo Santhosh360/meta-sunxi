@@ -40,16 +40,16 @@ do_compile_append() {
     ${B}/tools/mkimage -C none -A arm -T script -d ${WORKDIR}/boot.cmd ${WORKDIR}/${UBOOT_ENV_BINARY}
     
     # Add the soc specific parameters in the environment
-    sed -e "s,overlay_prefix=,overlay_prefix=${OVERLAY_PREFIX},g" \
+    sed -e "s,overlay_prefix=,overlay_prefix="sun8i-h3",g" \
         -i ${WORKDIR}/nanopi-r1-env.txt
-    sed -e "s,overlays=,overlays=${DEFAULT_OVERLAYS} ,g" \
+    sed -e "s,overlays=,overlays="usbhost0 usbhost1 uart1" ,g" \
         -i ${WORKDIR}/nanopi-r1-env.txt
     # Select boot partition
-    if [ ! -z "${SUNXI_BOOT_IMAGE}" ]; then
-        sed -e "s,rootdev=,rootdev=/dev/${SUNXI_STORAGE_DEVICE}p2 ,g" \
+    if [ ! -z "boot.img" ]; then
+        sed -e "s,rootdev=,rootdev=/dev/"mmcblk0"p2 ,g" \
             -i ${WORKDIR}/nanopi-r1-env.txt
     else
-        sed -e "s,rootdev=,rootdev=/dev/${SUNXI_STORAGE_DEVICE}p1 ,g" \
+        sed -e "s,rootdev=,rootdev=/dev/"mmcblk0"p1 ,g" \
             -i ${WORKDIR}/nanopi-r1-env.txt
     fi
 }

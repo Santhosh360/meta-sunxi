@@ -33,6 +33,16 @@ SRC_URI_append_bananapi = " file://axp20x.cfg"
 
 FILES_${KERNEL_PACKAGE_NAME}-base_append = " ${nonarch_base_libdir}/modules/${KERNEL_VERSION}/modules.builtin.modinfo"
 
+do_install_append() {
+    install -d ${D}${includedir}
+    install -m 0644 ${B}/include/generated/autoconf.h ${D}${includedir}/autoconf.h
+}
+
+sysroot_stage_all_append_dunfell () {
+    install -d ${SYSROOT_DESTDIR}${includedir}
+    install -m 0644 ${D}${includedir}/autoconf.h ${SYSROOT_DESTDIR}${includedir}/autoconf.h
+}
+
 PACKAGES += "kernel-autoconf"
 PROVIDES += "kernel-autoconf"
 

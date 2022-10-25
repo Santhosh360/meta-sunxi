@@ -58,7 +58,3 @@ do_install_append() {
     # Install files to rootfs/boot/
     install -D -m 644 ${WORKDIR}/nanopi-r1-env.txt ${D}/boot/nanopi-r1-env.txt
 }
-
-do_deploy_append() {
-    install -D -m 644 ${WORKDIR}/nanopi-r1-env.txt ${DEPLOYDIR}/
-}

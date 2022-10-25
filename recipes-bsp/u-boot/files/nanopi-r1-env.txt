@@ -1,7 +1,0 @@
-extra_bootargs=
-rootdev=
-rootfstype=ext4
-console=ttyS1,115200
-verbosity=7
-overlay_prefix=
-overlays=
